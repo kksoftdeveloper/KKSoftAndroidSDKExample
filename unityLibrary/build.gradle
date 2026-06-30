@@ -1,0 +1,66 @@
+plugins {
+    id "com.android.library"
+}
+
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+def launcherNdkDir = localProps.getProperty("ndk.dir")
+
+android {
+    namespace "com.unity3d.player"
+    if (launcherNdkDir != null && !launcherNdkDir.trim().isEmpty()) {
+        ndkPath launcherNdkDir
+    }
+
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 34
+        versionCode 30
+        versionName "1.0.0"
+        consumerProguardFiles "proguard-unity.txt"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig true
+        dataBinding true
+    }
+
+    androidResources {
+        noCompress += [".unity3d", ".ress", ".resource", ".obb", ".bundle", ".unityexp"]
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+            keepDebugSymbols += ["*/armeabi-v7a/*.so", "*/arm64-v8a/*.so", "*/x86/*.so", "*/x86_64/*.so"]
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    api files("libs/kksoftsdk-release.aar")
+
+    implementation "com.appmb.sdk:mbcore:1.0.0"
+    implementation "com.appmb.sdk:mbcoreui:1.0.0"
+    implementation "com.appmb.sdk:mbauth:1.0.0"
+    implementation "com.appmb.sdk:mbpayment:1.0.0"
+    implementation "com.appmb.sdk:mbtracking:1.0.0"
+
+    implementation "androidx.appcompat:appcompat:1.5.1"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
+}

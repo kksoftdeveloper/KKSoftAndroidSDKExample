@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+
+  </data>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnSignUpLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign up, Login"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/btnLastestSession"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Get Lastest Session"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnBuyItems"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Buy Items"/>-->
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"/>
+
+    <Button
+        android:id="@+id/btnLinkAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Link Account"/>
+
+    <Button
+        android:id="@+id/btnBuyItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buy Items"/>
+
+    <Button
+        android:id="@+id/btnTokenExpiration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Token Expiration"/>
+
+    <Button
+        android:id="@+id/btnChangeGameServer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Game Server"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/btnSessionInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Latest Session"/>
+
+    <Button
+        android:id="@+id/btnUserBlocked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="User Blocked"/>
+
+    <Button
+        android:id="@+id/btnRefreshToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refresh Token"/>
+
+    <Button
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Account"/>
+
+    <Button
+        android:id="@+id/btnGameTracking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Game Tracking"/>
+
+    <Button
+        android:id="@+id/btnUpdateServerClientId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Server Client ID"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Token:"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tvToken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Error:"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tvErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@android:color/black"/>
+  </LinearLayout>
+</layout>

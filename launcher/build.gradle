@@ -1,0 +1,114 @@
+plugins {
+    id "com.android.application"
+    id "com.google.gms.google-services"
+}
+
+configurations.configureEach {
+    exclude group: "com.google.firebase", module: "firebase-crashlytics"
+    exclude group: "com.google.firebase", module: "firebase-crashlytics-ndk"
+}
+
+android {
+    namespace "com.a.one.tsvn"
+    compileSdk 34
+
+    flavorDimensions "environment"
+
+    productFlavors {
+
+        staging {
+            dimension "environment"
+
+            applicationId "com.a.one.tsvn.staging"
+            versionNameSuffix "-staging"
+
+            buildConfigField "String", "ENVIRONMENT", "\"staging\""
+            resValue "string", "app_name", "IOne Staging"
+        }
+
+        production {
+            dimension "environment"
+
+            applicationId "com.a.one.tsvn"
+
+            buildConfigField "String", "ENVIRONMENT", "\"production\""
+
+            resValue "string", "app_name", "IOne"
+        }
+    }
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 34
+        versionCode 41
+        versionName "1.0.0"
+
+        buildConfigField "String", "gidClientID", "\"998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com\""
+        buildConfigField "String", "facebookAppID", "\"1902708233752633\""
+        buildConfigField "String", "facebookClientToken", "\"1f948d7376d1d56a62d46f655dbec206\""
+        buildConfigField "String", "facebookDisplayName", "\"SDKExample\""
+        buildConfigField "String", "firebaseAppID", "\"1:998015044363:android:436df574c3bbe842c3b00e\""
+        buildConfigField "String", "adjustId", "\"6751104811\""
+        buildConfigField "String", "adjustToken", "\"x04fe8zhx6gw\""
+        buildConfigField "String", "appFlyersId", "\"6751104811\""
+        buildConfigField "String", "appFlyersDevKey", "\"bXnAJLj5T8si5GhhSad9TY\""
+        buildConfigField "String", "tiktokAppID", "\"awo5h6p7hk2b8jbo\""
+        buildConfigField "String", "tiktokAccessToken", "\"ZF4JKMRoSZLJrihU5qTw9LcoR6AO1jKW\""
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        buildConfig true
+        resValues true
+        dataBinding true
+    }
+
+    signingConfigs {
+        debug {
+            def keystorePropertiesFile = file("debug-keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+            storeFile file(keystoreProperties["storeFile"])
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    androidResources {
+        noCompress += [".unity3d", ".ress", ".resource", ".obb", ".bundle", ".unityexp"]
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+            keepDebugSymbols += ["*/armeabi-v7a/*.so", "*/arm64-v8a/*.so", "*/x86/*.so", "*/x86_64/*.so"]
+        }
+    }
+}
+
+dependencies {
+    implementation project(":unityLibrary")
+
+    implementation "com.appmb.sdk:mbcore:1.0.0"
+    implementation "com.appmb.sdk:mbcoreui:1.0.0"
+    implementation "com.appmb.sdk:mbauth:1.0.0"
+    implementation "com.appmb.sdk:mbpayment:1.0.0"
+    implementation "com.appmb.sdk:mbtracking:1.0.0"
+}

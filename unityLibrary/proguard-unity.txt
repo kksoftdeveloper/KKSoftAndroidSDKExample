@@ -1,0 +1,2 @@
+-keep class com.kksoft.unityexample.KKSoftUnityBridge { *; }
+-keep class com.kksoft.unityexample.MainActivity { *; }

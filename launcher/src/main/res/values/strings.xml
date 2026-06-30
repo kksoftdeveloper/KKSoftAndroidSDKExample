@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">IOne</string>
+  <string name="game_view_content_description">Game view</string>
+  <string name="facebook_app_id">1902708233752633</string>
+  <string name="facebook_client_token">1f948d7376d1d56a62d46f655dbec206</string>
+  <string name="fb_login_protocol_scheme">fb1902708233752633</string>
+</resources>
