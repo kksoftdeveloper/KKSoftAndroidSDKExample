@@ -2,27 +2,56 @@
 
 Example Android project for checking the KKSoft Android SDK from a Unity-style host.
 
+## Integration
+
+1. Add JitPack to `settings.gradle`:
+
+   ```gradle
+   dependencyResolutionManagement {
+       repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+       repositories {
+           google()
+           mavenCentral()
+           maven { url "https://jitpack.io" }
+       }
+   }
+   ```
+
+2. Add the KKSoft SDK dependency to the Android library/app module:
+
+   ```gradle
+   implementation("com.github.kksoftdeveloper:KKSoftAndroidSDK:352227d")
+   ```
+
+   Use `api(...)` instead of `implementation(...)` when another module, such as
+   `:launcher`, needs to compile directly against SDK classes exposed through a
+   library module.
+
+## Environment Configuration
+
+Host apps do not need to add `BuildConfig.ENVIRONMENT`,
+`BuildConfig.IS_STAGING`, `BuildConfig.IS_PRODUCTION`, or SDK base URL fields.
+These values are generated inside the KKSoft SDK.
+
+By default, the SDK uses production. For SDK development only, set the
+environment before building the SDK:
+
+```properties
+# local.properties in the SDK project
+environment=staging
+```
+
 ## Build
-
-Run:
-
+Archive
 ```bash
-cd /Users/kksoft/Desktop/UnityAndroidExample
-./build-example.sh
+./gradlew :launcher:assembleStagingDebug
+./gradlew :launcher:assembleProductionDebug
 ```
 
-The script will:
-
-1. Build `kksoftsdk-release.aar` from `/Users/kksoft/Desktop/KKSoftAndroidSDK`.
-2. Copy it to `unityLibrary/libs/kksoftsdk-release.aar`.
-3. Publish the SDK dependency modules to Maven local.
-4. Build `:launcher:assembleDebug`.
-
-Manual build after the AAR is copied:
-
+Run
 ```bash
-./gradlew :launcher:assembleDebug
+./gradlew :launcher:installStagingDebug
 ```
 
-The Android bridge is in `unityLibrary/src/main/java/com/kksoft/unityexample/KKSoftUnityBridge.java`.
+The Android Unity host code is in `unityLibrary/src/main/java/com/unity3d/player/Main2Activity.java`.
 The Unity C# wrapper sample is in `UnityAssets/Scripts/KKSoftAndroid.cs`.

@@ -2,10 +2,10 @@ package com.unity3d.player;
 
 import android.util.Log;
 
-import com.appmb.sdk.mbtracking.GameTracking;
 import com.appmb.sdk.mbtracking.model.Level;
 import com.appmb.sdk.mbtracking.model.OnlineTime;
 import com.appmb.sdk.mbtracking.model.VIPLevel;
+import com.kksoft.sdk.KKSoftAndroidSdk;
 
 /**
  * Example class demonstrating how to use all GameTracking functions.
@@ -49,7 +49,7 @@ public class GameTrackingExample {
             String serverName) {
         try {
             Log.d(TAG, "Example: Tracking play game event");
-            GameTracking.logPlayGame(
+            KKSoftAndroidSdk.logPlayGame(
                     gameUUID,
                     characterId,
                     characterName,
@@ -80,7 +80,7 @@ public class GameTrackingExample {
             String serverName) {
         try {
             Log.d(TAG, "Example: Tracking tutorial completed S1 event");
-            GameTracking.logTutorialCompletedS1(
+            KKSoftAndroidSdk.logTutorialCompletedS1(
                     gameUUID,
                     characterId,
                     characterName,
@@ -121,7 +121,7 @@ public class GameTrackingExample {
                 return;
             }
             
-            GameTracking.logLevelUp(
+            KKSoftAndroidSdk.logLevelUp(
                     level,
                     gameUUID,
                     characterId,
@@ -163,7 +163,7 @@ public class GameTrackingExample {
                 return;
             }
             
-            GameTracking.logVIPLevel(
+            KKSoftAndroidSdk.logVIPLevel(
                     vipLevel,
                     gameUUID,
                     characterId,
@@ -214,7 +214,7 @@ public class GameTrackingExample {
                 return;
             }
             
-            GameTracking.logOnlineTime(
+            KKSoftAndroidSdk.logOnlineTime(
                     onlineTime,
                     gameUUID,
                     characterId,
@@ -352,4 +352,3 @@ public class GameTrackingExample {
         Log.d(TAG, "========== Completed GameTracking Examples ==========");
     }
 }
-

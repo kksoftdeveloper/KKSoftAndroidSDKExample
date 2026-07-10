@@ -1,0 +1,146 @@
+{
+  "project_info": {
+    "project_number": "998015044363",
+    "project_id": "game-sdk-454409",
+    "storage_bucket": "game-sdk-454409.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998015044363:android:c548fec0fb0f7628c3b00e",
+        "android_client_info": {
+          "package_name": "com.a.one.tsvn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998015044363-cg0hq8r41r0lfcrc6f4hnmtrjufdl8pm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn",
+            "certificate_hash": "9dad934757dddfb6f03594ecad96660b1a69da48"
+          }
+        },
+        {
+          "client_id": "998015044363-i9paj7319j2uks8pvrkliko39c41iah9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn",
+            "certificate_hash": "020bcc5bb214c00543be09f241ce4e0cf6201d26"
+          }
+        },
+        {
+          "client_id": "998015044363-jbd2hs29838itv1vk6k2p20taq91ihih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn",
+            "certificate_hash": "8982618cf50fd794eaa1814797a11522403428a7"
+          }
+        },
+        {
+          "client_id": "998015044363-ria4thgl4qhceq19uvmhc5n7goocqpmf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn",
+            "certificate_hash": "6683d9229c2028a70229f8aeab1267af0500dd39"
+          }
+        },
+        {
+          "client_id": "998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDndQSyVgoKOCKONTEi6o4w9qlWheEvFyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107861682944256297437",
+              "client_type": 3
+            },
+            {
+              "client_id": "998015044363-kmgpns4jiqvtmgdgvmqkbcguuv7fq9vd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kksoft.vn.ts3.staging"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998015044363:android:436df574c3bbe842c3b00e",
+        "android_client_info": {
+          "package_name": "com.a.one.tsvn.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998015044363-2n72qa1lh74grofoh5jun2u76fvn7kc9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn.staging",
+            "certificate_hash": "8982618cf50fd794eaa1814797a11522403428a7"
+          }
+        },
+        {
+          "client_id": "998015044363-g32k0f2pjkvmvom7ceqc27l5qd5q0tad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn.staging",
+            "certificate_hash": "6683d9229c2028a70229f8aeab1267af0500dd39"
+          }
+        },
+        {
+          "client_id": "998015044363-ji4h01brt0jpsm2gs2mqjskob72osm6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn.staging",
+            "certificate_hash": "9dad934757dddfb6f03594ecad96660b1a69da48"
+          }
+        },
+        {
+          "client_id": "998015044363-sj2o1n9m70cnpmuqb9ktek6ra24rbt5u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.a.one.tsvn.staging",
+            "certificate_hash": "020bcc5bb214c00543be09f241ce4e0cf6201d26"
+          }
+        },
+        {
+          "client_id": "998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDndQSyVgoKOCKONTEi6o4w9qlWheEvFyQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107861682944256297437",
+              "client_type": 3
+            },
+            {
+              "client_id": "998015044363-kmgpns4jiqvtmgdgvmqkbcguuv7fq9vd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kksoft.vn.ts3.staging"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

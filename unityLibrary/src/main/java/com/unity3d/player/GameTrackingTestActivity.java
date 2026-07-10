@@ -9,11 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appmb.sdk.mbtracking.GameTracking;
 import com.appmb.sdk.mbtracking.model.Level;
 import com.appmb.sdk.mbtracking.model.OnlineTime;
 import com.appmb.sdk.mbtracking.model.VIPLevel;
-import com.unity3d.player.CrashExample;
+import com.kksoft.sdk.KKSoftAndroidSdk;
 
 /**
  * Activity for testing GameTracking functions.
@@ -239,7 +238,7 @@ public class GameTrackingTestActivity extends Activity {
             String serverId = getServerId();
             String serverName = getServerName();
             
-            GameTracking.logPlayGame(gameUUID, characterId, characterName, serverId, serverName);
+            KKSoftAndroidSdk.logPlayGame(gameUUID, characterId, characterName, serverId, serverName);
             showToast("Play Game event tracked successfully!");
             Log.d(TAG, "Play Game tracked: gameUUID=" + gameUUID + ", characterId=" + characterId);
         } catch (Exception e) {
@@ -256,7 +255,7 @@ public class GameTrackingTestActivity extends Activity {
             String serverId = getServerId();
             String serverName = getServerName();
             
-            GameTracking.logTutorialCompletedS1(gameUUID, characterId, characterName, serverId, serverName);
+            KKSoftAndroidSdk.logTutorialCompletedS1(gameUUID, characterId, characterName, serverId, serverName);
             showToast("Tutorial Completed S1 event tracked successfully!");
             Log.d(TAG, "Tutorial Completed S1 tracked: gameUUID=" + gameUUID + ", characterId=" + characterId);
         } catch (Exception e) {
@@ -281,7 +280,7 @@ public class GameTrackingTestActivity extends Activity {
             String serverId = getServerId();
             String serverName = getServerName();
             
-            GameTracking.logLevelUp(level, gameUUID, characterId, characterName, serverId, serverName);
+            KKSoftAndroidSdk.logLevelUp(level, gameUUID, characterId, characterName, serverId, serverName);
             showToast("Level Up event tracked successfully! Level: " + levelValue);
             Log.d(TAG, "Level Up tracked: level=" + levelValue + ", gameUUID=" + gameUUID);
         } catch (Exception e) {
@@ -306,7 +305,7 @@ public class GameTrackingTestActivity extends Activity {
             String serverId = getServerId();
             String serverName = getServerName();
             
-            GameTracking.logVIPLevel(vipLevel, gameUUID, characterId, characterName, serverId, serverName);
+            KKSoftAndroidSdk.logVIPLevel(vipLevel, gameUUID, characterId, characterName, serverId, serverName);
             showToast("VIP Level event tracked successfully! VIP Level: " + vipLevelValue);
             Log.d(TAG, "VIP Level tracked: vipLevel=" + vipLevelValue + ", gameUUID=" + gameUUID);
         } catch (Exception e) {
@@ -339,7 +338,7 @@ public class GameTrackingTestActivity extends Activity {
             String serverId = getServerId();
             String serverName = getServerName();
             
-            GameTracking.logOnlineTime(onlineTime, gameUUID, characterId, characterName, level, serverId, serverName);
+            KKSoftAndroidSdk.logOnlineTime(onlineTime, gameUUID, characterId, characterName, level, serverId, serverName);
             showToast("Online Time event tracked successfully! Time: " + onlineTimeMinutes + " minutes");
             Log.d(TAG, "Online Time tracked: minutes=" + onlineTimeMinutes + ", level=" + levelValue + ", gameUUID=" + gameUUID);
         } catch (Exception e) {
@@ -477,4 +476,3 @@ public class GameTrackingTestActivity extends Activity {
         }
     }
 }
-

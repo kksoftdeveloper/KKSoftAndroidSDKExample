@@ -33,6 +33,15 @@ public class TokenManagerDialogFragment extends DialogFragment {
 	
 	private TokenManagerDialogListener listener;
 	private String accessToken;
+	private boolean actionHandled = false;
+
+	private void notifyAction(String action) {
+		actionHandled = true;
+		if (listener != null) {
+			listener.onDialogDismissed(action);
+		}
+		dismiss();
+	}
 	
 	@Override
 	public void onAttach(Context context) {
@@ -72,123 +81,54 @@ public class TokenManagerDialogFragment extends DialogFragment {
 		view.findViewById(R.id.btnSignUpLogin).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("SignUp_Login");
-				}
-				dismiss();
+				notifyAction("SignUp_Login");
 			}
 		});
 		view.findViewById(R.id.btnLogout).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Logout");
-				}
-				dismiss();
-			}
-		});
-		view.findViewById(R.id.btnUserBlocked).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("USER_BLOCKED");
-				}
-				dismiss();
+				notifyAction("Logout");
 			}
 		});
 		view.findViewById(R.id.btnDeleteAccount).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Deactivate_Account");
-				}
-				dismiss();
+				notifyAction("Deactivate_Account");
 			}
 		});
 		view.findViewById(R.id.btnBuyItems).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("PURCHASE");
-				}
-				dismiss();
+				notifyAction("PURCHASE");
 			}
 		});
-		view.findViewById(R.id.btnTokenExpiration).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Token_Expiration");
-				}
-				dismiss();
-			}
-		});
-		
 		view.findViewById(R.id.btnChangeGameServer).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Change_Game_Server");
-				}
-				dismiss();
+				notifyAction("Change_Game_Server");
 			}
 		});
 		
 		view.findViewById(R.id.btnLinkAccount).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Link_Account");
-				}
-				dismiss();
-			}
-		});
-		
-		view.findViewById(R.id.btnSessionInfo).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Latest_Session_Info");
-				}
-				dismiss();
-			}
-		});
-		
-		view.findViewById(R.id.btnRefreshToken).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Refresh_Token");
-				}
-				dismiss();
+				notifyAction("Link_Account");
 			}
 		});
 		
 		view.findViewById(R.id.btnGameTracking).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("GAME_TRACKING_TEST");
-				}
-				dismiss();
+				notifyAction("GAME_TRACKING_TEST");
 			}
 		});
 		
-		view.findViewById(R.id.btnUpdateServerClientId).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (listener != null) {
-					listener.onDialogDismissed("Update_Server_Client_Id");
-				}
-				dismiss();
-			}
-		});
 	}
 	
 	@Override
 	public void onDismiss(DialogInterface dialog) {
 		super.onDismiss(dialog);
-		if (listener != null) {
+		if (!actionHandled && listener != null) {
 			listener.onDialogDismissed("Dialog dismissed without action");
 		}
 	}

@@ -1,1 +1,7 @@
-sdk.dir=/Users/kksoft/Library/Android/sdk
+# Copy this file to local.properties and point sdk.dir to your local Android SDK.
+# macOS default:
+# sdk.dir=/Users/<your-user>/Library/Android/sdk
+
+# SDK environment is configured in the KKSoft SDK project only, not in this host app.
+# For SDK development staging builds, set this in KKSoftAndroidSDK/local.properties:
+# environment=staging
