@@ -23,7 +23,7 @@ android {
         versionCode 30
         versionName "1.0.0"
 
-        buildConfigField "boolean", "isStaging", "false"
+        buildConfigField "boolean", "isStaging", "true"
 
         buildConfigField "String", "gidClientID", "\"998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com\""
         buildConfigField "String", "facebookAppID", "\"1161544315137705\""
@@ -69,7 +69,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    api("com.github.kksoftdeveloper:KKSoftAndroidSDK:56208ca")
+    api("com.github.kksoftdeveloper:KKSoftAndroidSDK:230ebc1")
 
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
