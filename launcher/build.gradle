@@ -10,7 +10,7 @@ configurations.configureEach {
 
 android {
     namespace "com.a.one.tsvn"
-    compileSdk 34
+    compileSdk 36
 
 //    flavorDimensions "environment"
 //
@@ -38,8 +38,8 @@ android {
 
     defaultConfig {
         minSdk 23
-        targetSdk 34
-        versionCode 41
+        targetSdk 36
+        versionCode 42
         versionName "1.0.0"
 
         applicationId "com.a.one.tsvn"
@@ -71,11 +71,24 @@ android {
             keyPassword keystoreProperties["keyPassword"]
             storeFile file(keystoreProperties["storeFile"])
         }
+        release {
+            def keystorePropertiesFile = file("release-keystore.properties")
+            def keystoreProperties = new Properties()
+            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
     }
 
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.release
         }
     }
 
