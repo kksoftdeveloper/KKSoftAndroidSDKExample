@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="preferExternal">
 
+  <uses-permission
+      android:name="com.google.android.gms.permission.AD_ID"/>
+
   <application
       android:name="com.a.one.tsvn.MyApp"
       android:icon="@mipmap/app_icon"

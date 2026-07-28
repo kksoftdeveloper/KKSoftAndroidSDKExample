@@ -10,7 +10,7 @@ configurations.configureEach {
 
 android {
     namespace "com.a.one.tsvn"
-    compileSdk 36
+    compileSdk 37
 
 //    flavorDimensions "environment"
 //
@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         minSdk 23
-        targetSdk 36
+        targetSdk 37
         versionCode 42
         versionName "1.0.0"
 
