@@ -13,18 +13,32 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.appmb.sdk.mbauth.MbAuth;
+import com.appmb.sdk.mbauth.model.UpdateServerIdResult;
 import com.appmb.sdk.mbauth.ui.login.AuthResult;
 import com.appmb.sdk.mbcore.config.MbSdkConfig;
 import com.appmb.sdk.mbcore.config.TrackingConfig;
+import com.appmb.sdk.mbcore.data.dto.response.MbServer;
 import com.appmb.sdk.mbcore.model.MbAuthData;
+import com.appmb.sdk.mbcore.model.server.GetListServerIdsResult;
 import com.appmb.sdk.mbpayment.MbPayment;
 import com.appmb.sdk.mbpayment.model.PurchaseResult;
 import com.kksoft.sdk.KKSoftAndroidSdk;
 import com.unity3d.player.dialog.TokenManagerDialogFragment;
 import com.unity3d.player.dialog.TokenManagerDialogListener;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import kotlin.coroutines.Continuation;
+import kotlin.jvm.functions.Function2;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.CoroutineStart;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.GlobalScope;
 
 public class Main2Activity extends UnityPlayerActivity implements TokenManagerDialogListener {
 	private MbAuthData mbAuthData = null;
@@ -32,6 +46,7 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 	private static final int AUTHENTICATING_CODE = 1234;
 	private static final String DEFAULT_GAME_ID = "1";
 	private static final String DEFAULT_SERVER_CLIENT_ID = "IOS1";
+	private static final Random RANDOM = new Random();
 	
 	private SharedPreferences sharedPreferences;
 	
@@ -154,7 +169,58 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 	private void handleAuthenticatedUser(MbAuthData authData) {
 		mbAuthData = authData;
 		SharePreferenceUtil.saveAccessToken(mbAuthData.getAccessToken(), sharedPreferences.edit());
+		if (isBlank(mbAuthData.getServerId())) {
+			updateRandomServerClientId();
+		} else {
+			Log.d("Main2Activity", "Skip random server update. Current server id: " + mbAuthData.getServerId());
+		}
 		showTokenManagerDialog();
+	}
+
+	private void updateRandomServerClientId() {
+		BuildersKt.launch(GlobalScope.INSTANCE, Dispatchers.getIO(), CoroutineStart.DEFAULT, new Function2<CoroutineScope, Continuation<? super Unit>, Object>() {
+			@Override
+			public Object invoke(CoroutineScope scope, Continuation<? super Unit> continuation) {
+				return MbAuth.INSTANCE.getListServerIds(new Function1<GetListServerIdsResult, Unit>() {
+					@Override
+					public Unit invoke(GetListServerIdsResult result) {
+						handleServerListResult(result);
+						return null;
+					}
+				}, continuation);
+			}
+		});
+	}
+
+	private void handleServerListResult(GetListServerIdsResult result) {
+		if (!(result instanceof GetListServerIdsResult.Success)) {
+			Log.d("Main2Activity", "Get server list failed: " + result);
+			return;
+		}
+
+		List<MbServer> servers = ((GetListServerIdsResult.Success) result).getData();
+		List<String> serverClientIds = new ArrayList<>();
+		for (MbServer server : servers) {
+			String serverClientId = server.getServerClientId();
+			if (!isBlank(serverClientId)) {
+				serverClientIds.add(serverClientId);
+			}
+		}
+
+		if (serverClientIds.isEmpty()) {
+			Log.d("Main2Activity", "No server client id found in SDK server list");
+			return;
+		}
+
+		String serverClientId = serverClientIds.get(RANDOM.nextInt(serverClientIds.size()));
+		Log.d("Main2Activity", "Selected random server client id: " + serverClientId);
+		KKSoftAndroidSdk.updateServerClientId(serverClientId, new Function1<UpdateServerIdResult, Unit>() {
+			@Override
+			public Unit invoke(UpdateServerIdResult result) {
+				Log.d("Main2Activity", "Update server client id result: " + result);
+				return null;
+			}
+		});
 	}
 
 	private void handleFailure(AuthResult.Failure failure) {
@@ -263,7 +329,7 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 				.build();
 
 		MbSdkConfig config = new MbSdkConfig.Builder()
-				.setBaseUrl(BuildConfig.isStaging ? "https://api-staging.kksoft.vn" : null)
+//				.setBaseUrl(BuildConfig.isStaging ? "https://api-staging.kksoft.vn" : null)
 				.setAppId(getPackageName())
 				.setGameId(DEFAULT_GAME_ID)
 				.setServerClientId(DEFAULT_SERVER_CLIENT_ID)
