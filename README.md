@@ -501,6 +501,32 @@ Use this order:
    `OnAuthResult(payload)`. When Unity wants to show the SDK UI for that state,
    call `TokenExpiration()`, `UserBlocked()`, or `ServerMaintenance()`.
 
+### Auto-select a server after authentication
+
+After a successful login, registration, or account link, check the authenticated
+user data first. If `authData.serverId` is already present, keep the current
+server and do not update it.
+
+If `authData.serverId` is missing, fetch the server list from the SDK, choose a
+random server from that list, and pass its `serverClientId` back to the SDK.
+Run this from a coroutine or another SDK-safe async scope:
+
+```kotlin
+MbAuth.getListServerIds { result ->
+  if (result is GetListServerIdsResult.Success) {
+    val serverClientId = result.data
+      .mapNotNull { it.serverClientId }
+      .randomOrNull()
+
+    serverClientId?.let {
+      KKSoftAndroidSdk.updateServerClientId(it) { updateResult ->
+        // Handle or log updateResult if needed.
+      }
+    }
+  }
+}
+```
+
 Common auth payloads:
 
 ```text
