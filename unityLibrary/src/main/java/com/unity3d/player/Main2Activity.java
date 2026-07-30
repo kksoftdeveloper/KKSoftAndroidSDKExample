@@ -173,8 +173,8 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 			updateRandomServerClientId();
 		} else {
 			Log.d("Main2Activity", "Skip random server update. Current server id: " + mbAuthData.getServerId());
+			showTokenManagerDialog();
 		}
-		showTokenManagerDialog();
 	}
 
 	private void updateRandomServerClientId() {
@@ -195,6 +195,7 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 	private void handleServerListResult(GetListServerIdsResult result) {
 		if (!(result instanceof GetListServerIdsResult.Success)) {
 			Log.d("Main2Activity", "Get server list failed: " + result);
+			showTokenManagerDialogOnMainThread();
 			return;
 		}
 
@@ -209,6 +210,7 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 
 		if (serverClientIds.isEmpty()) {
 			Log.d("Main2Activity", "No server client id found in SDK server list");
+			showTokenManagerDialogOnMainThread();
 			return;
 		}
 
@@ -218,7 +220,21 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 			@Override
 			public Unit invoke(UpdateServerIdResult result) {
 				Log.d("Main2Activity", "Update server client id result: " + result);
+				if (result instanceof UpdateServerIdResult.Success) {
+					mbAuthData = ((UpdateServerIdResult.Success) result).getAuthData();
+					SharePreferenceUtil.saveAccessToken(mbAuthData.getAccessToken(), sharedPreferences.edit());
+				}
+				showTokenManagerDialogOnMainThread();
 				return null;
+			}
+		});
+	}
+
+	private void showTokenManagerDialogOnMainThread() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showTokenManagerDialog();
 			}
 		});
 	}

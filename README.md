@@ -527,6 +527,10 @@ MbAuth.getListServerIds { result ->
 }
 ```
 
+Continue server-dependent game flows after the update callback returns. On
+`UpdateServerIdResult.Success`, the SDK returns the updated `authData`; use that
+value for any local session state so later SDK calls use the selected server.
+
 Common auth payloads:
 
 ```text
