@@ -69,7 +69,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    api("com.github.kksoftdeveloper:KKSoftAndroidSDK:708a5f7")
+    api("com.github.kksoftdeveloper:KKSoftAndroidSDK:a3a6e2a")
 
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
