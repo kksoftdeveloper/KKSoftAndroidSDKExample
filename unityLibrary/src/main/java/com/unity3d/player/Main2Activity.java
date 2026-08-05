@@ -345,7 +345,6 @@ public class Main2Activity extends UnityPlayerActivity implements TokenManagerDi
 				.build();
 
 		MbSdkConfig config = new MbSdkConfig.Builder()
-//				.setBaseUrl(BuildConfig.isStaging ? "https://api-staging.kksoft.vn" : null)
 				.setAppId(getPackageName())
 				.setGameId(DEFAULT_GAME_ID)
 				.setServerClientId(DEFAULT_SERVER_CLIENT_ID)

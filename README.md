@@ -18,7 +18,7 @@
 ### Add the KKSoft SDK dependency to the Android library/app module:
 
    ```gradle
-   api("com.github.kksoftdeveloper:KKSoftAndroidSDK:a3a6e2a")
+   api("com.github.kksoftdeveloper:KKSoftAndroidSDK:5a8b219")
    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
    ```
 
@@ -47,6 +47,7 @@ android.enableJetifier=true
 defaultConfig {
     //...
 
+    buildConfigField "boolean", "isStaging", "true"
     buildConfigField "String", "gidClientID", "\"998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com\""
     buildConfigField "String", "facebookAppID", "\"1161544315137705\""
     buildConfigField "String", "facebookClientToken", "\"6a2631357b252d0ba6818832146a59dc\""
@@ -54,6 +55,7 @@ defaultConfig {
     buildConfigField "String", "firebaseAppID", "\"1:998015044363:android:436df574c3bbe842c3b00e\""
     buildConfigField "String", "adjustId", "\"6751104811\""
     buildConfigField "String", "adjustToken", "\"x04fe8zhx6gw\""
+    buildConfigField "String", "adjustEnvironment", "\"production\""
     buildConfigField "String", "appFlyersId", "\"6751104811\""
     buildConfigField "String", "appFlyersDevKey", "\"bXnAJLj5T8si5GhhSad9TY\""
     buildConfigField "String", "tiktokAppID", "\"awo5h6p7hk2b8jbo\""
@@ -63,13 +65,14 @@ defaultConfig {
 }
 ```
 
+The SDK uses `isStaging` from the host app's `BuildConfig` to choose the KKSoft environment:
+`true` -> KKSoft Staging, `false` or missing -> KKSoft Produciton.
+
 ## 3. Create Android Bridge
 
 Create a Kotlin or Java bridge in the Unity Android plugin source. Unity should call this bridge instead of calling every SDK class directly.
 
-`baseUrl` is optional. Host apps should leave it empty unless they intentionally
-need to override the SDK endpoint at runtime. Unity only provides third-party
-tracking IDs and tokens through `TrackingConfig`.
+Unity only provides third-party tracking IDs and tokens through `TrackingConfig`.
 
 Call `initialize(...)` only once for the current app process, ideally when the
 game starts. Do not call it again before opening auth, changing server, or
@@ -85,6 +88,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.appmb.sdk.mbauth.MbAuth
+import com.appmb.sdk.mbauth.model.UpdateServerIdResult
 import com.appmb.sdk.mbauth.ui.login.AuthResult
 import com.appmb.sdk.mbcore.config.MbSdkConfig
 import com.appmb.sdk.mbcore.config.TrackingConfig
@@ -126,8 +130,7 @@ object KKSoftUnityBridge {
     adjustToken: String?,
     tiktokAppId: String?,
     tiktokAccessToken: String?,
-    facebookDisplayName: String?,
-    baseUrl: String?
+    facebookDisplayName: String?
   ) {
     if (initialized) {
       registerPaymentResult(activity)
@@ -137,7 +140,12 @@ object KKSoftUnityBridge {
 
     val trackingConfig = TrackingConfig.Builder()
       .enableFirebase(!firebaseAppId.isNullOrBlank(), firebaseAppId)
-      .enableAdjust(!adjustToken.isNullOrBlank(), adjustId, adjustToken)
+      .enableAdjust(
+        !adjustToken.isNullOrBlank(),
+        adjustId,
+        adjustToken,
+        getAdjustEnvironment()
+      )
       .enableTikTok(!tiktokAppId.isNullOrBlank(), tiktokAppId, tiktokAccessToken)
       .enableMeta(!facebookAppId.isNullOrBlank(), facebookAppId, facebookClientToken, facebookDisplayName)
       .enableGid(googleClientId)
@@ -153,14 +161,17 @@ object KKSoftUnityBridge {
       .setFacebookClientToken(facebookClientToken)
       .setTrackingConfig(trackingConfig)
 
-    if (!baseUrl.isNullOrBlank()) {
-      builder.setBaseUrl(baseUrl)
-    }
-
     KKSoftAndroidSdk.init(activity, builder.build())
     initialized = true
     registerPaymentResult(activity)
     registerAuthSystemEvents(activity)
+  }
+
+  private fun getAdjustEnvironment(): String {
+    return runCatching {
+      BuildConfig::class.java.getField("adjustEnvironment").get(null) as? String
+    }.getOrNull()?.takeIf { it.isNotBlank() }
+      ?: TrackingConfig.ADJUST_ENVIRONMENT_PRODUCTION
   }
 
   @JvmStatic
@@ -186,6 +197,17 @@ object KKSoftUnityBridge {
   @JvmStatic
   fun startChangeServer(activity: Activity) {
     KKSoftAndroidSdk.startChangeGameServer(activity, CHANGE_SERVER_REQUEST)
+  }
+
+  @JvmStatic
+  fun updateServerClientId(serverClientId: String?) {
+    KKSoftAndroidSdk.updateServerClientId(serverClientId) { result ->
+      val payload = when (result) {
+        is UpdateServerIdResult.Success -> "server_selected:${result.authData.serverId ?: ""}"
+        is UpdateServerIdResult.Error -> "failure:${result.code}:${result.message ?: ""}"
+      }
+      UnityPlayer.UnitySendMessage(UNITY_OBJECT, "OnAuthResult", payload)
+    }
   }
 
   @JvmStatic
@@ -501,35 +523,9 @@ Use this order:
    `OnAuthResult(payload)`. When Unity wants to show the SDK UI for that state,
    call `TokenExpiration()`, `UserBlocked()`, or `ServerMaintenance()`.
 
-### Auto-select a server after authentication
-
-After a successful login, registration, or account link, check the authenticated
-user data first. If `authData.serverId` is already present, keep the current
-server and do not update it.
-
-If `authData.serverId` is missing, fetch the server list from the SDK, choose a
-random server from that list, and pass its `serverClientId` back to the SDK.
-Run this from a coroutine or another SDK-safe async scope:
-
-```kotlin
-MbAuth.getListServerIds { result ->
-  if (result is GetListServerIdsResult.Success) {
-    val serverClientId = result.data
-      .mapNotNull { it.serverClientId }
-      .randomOrNull()
-
-    serverClientId?.let {
-      KKSoftAndroidSdk.updateServerClientId(it) { updateResult ->
-        // Handle or log updateResult if needed.
-      }
-    }
-  }
-}
-```
-
-Continue server-dependent game flows after the update callback returns. On
-`UpdateServerIdResult.Success`, the SDK returns the updated `authData`; use that
-value for any local session state so later SDK calls use the selected server.
+If the host game has its own server picker, call `UpdateServerClientId(serverClientId)`
+after the player selects a server. The SDK matches that value against server name,
+server client ID, or server ID, then saves the selected server for later SDK calls.
 
 Common auth payloads:
 
