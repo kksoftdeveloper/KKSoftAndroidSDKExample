@@ -18,7 +18,7 @@
 ### Add the KKSoft SDK dependency to the Android library/app module:
 
    ```gradle
-   api("com.github.kksoftdeveloper:KKSoftAndroidSDK:69a7c0a")
+   api("com.github.kksoftdeveloper:KKSoftAndroidSDK:7f22079")
    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
    ```
 
