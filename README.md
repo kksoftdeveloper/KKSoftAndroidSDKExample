@@ -2,6 +2,12 @@
 
 ## 1. Add SDK To Unity
 
+### Add authToken to `gradle.properties`:
+
+```properties
+authToken=xxxx
+```
+
 ### Add JitPack to `settings.gradle`:
 
    ```gradle
@@ -10,7 +16,14 @@
        repositories {
            google()
            mavenCentral()
-           maven { url "https://jitpack.io" }
+           maven {
+            name = "JitPack"
+            url = uri("https://jitpack.io")
+
+            credentials {
+                username = providers.gradleProperty("authToken").get()
+            }
+        }
        }
    }
    ```
@@ -18,9 +31,67 @@
 ### Add the KKSoft SDK dependency to the Android library/app module:
 
    ```gradle
-   api("com.github.kksoftdeveloper:KKSoftAndroidSDK:7f22079")
+   implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:a760ef256e'
    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
    ```
+
+### Host app build requirements
+
+Recommended Android build configuration for host apps:
+
+```gradle
+android {
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 23
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.3"
+}
+```
+
+Recommended toolchain:
+
+```toml
+# gradle/libs.versions.toml
+agp = "8.11.1"
+```
+
+```properties
+# gradle/wrapper/gradle-wrapper.properties
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.13-bin.zip
+```
+
+When updating from an older KKSoft SDK build, replace the old AAR or JitPack
+commit and clear cached dependencies if the host app still loads old SDK code:
+
+```bash
+./gradlew --refresh-dependencies
+```
+
+The host app does not need to add the SDK's internal dependencies manually. Use
+only the KKSoft SDK dependency unless the game already has its own separate
+requirement.
+
+The SDK already includes Google Play Billing Library `9.0.0` through
+`com.android.billingclient:billing`. Do not add an older
+`com.android.billingclient:billing` or `billing-ktx` dependency in the Unity
+host project, because that can make the final app resolve an outdated Billing
+Library version and trigger Google Play Console warnings.
+
+For Google Play 16 KB page-size warnings, fix the native libraries in the Unity
+host project. Rebuild affected native libraries such as `libgrpc_csharp_ext.so`
+and `libunitytuningfork.so` with NDK r28 or later, or update the Unity/Google
+packages that provide those `.so` files.
 
 ### Add to `gradle.properties`:
 
