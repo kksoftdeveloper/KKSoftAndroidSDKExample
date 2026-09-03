@@ -24,7 +24,7 @@ android {
         versionCode 30
         versionName "1.0.0"
 
-        buildConfigField "boolean", "isStaging", "true"
+//        buildConfigField "boolean", "isStaging", "true"
 
         buildConfigField "String", "gidClientID", "\"998015044363-sjhpugc9t9md0voitgn1s1ra2ta6qn6j.apps.googleusercontent.com\""
         buildConfigField "String", "facebookAppID", "\"1161544315137705\""
@@ -72,7 +72,7 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.3"
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:a760ef256e'
+    implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:041779d131'
 
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
