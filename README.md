@@ -31,7 +31,7 @@ authToken=xxxx
 ### Add the KKSoft SDK dependency to the Android library/app module:
 
    ```gradle
-   implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:d1c517362d'
+   implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:ac9c0b9c0d'
    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
    ```
 
