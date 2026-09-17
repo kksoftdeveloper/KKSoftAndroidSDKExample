@@ -31,7 +31,7 @@ authToken=xxxx
 ### Add the KKSoft SDK dependency to the Android library/app module:
 
    ```gradle
-   implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:041779d131'
+   implementation 'com.github.kksoftdeveloper.KKSoftAndroidSDK:kksoftsdk:d1c517362d'
    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
    ```
 
@@ -593,6 +593,20 @@ Use this order:
 6. After `Initialize()`, the bridge automatically forwards SDK system events to
    `OnAuthResult(payload)`. When Unity wants to show the SDK UI for that state,
    call `TokenExpiration()`, `UserBlocked()`, or `ServerMaintenance()`.
+
+Auth readiness rule:
+
+The host app must not call authenticated SDK APIs immediately after app launch.
+Wait until one of these states is complete:
+
+- A fresh login/register flow returns `auth_success` or `register_success`.
+- An existing session is refreshed successfully through the SDK refresh-token flow.
+
+Only after auth is ready should the host app call APIs that require an
+authenticated user, including server/character APIs, payment APIs, identity APIs,
+or game APIs that send the bearer token. If refresh token fails or the SDK emits
+`token_expiration:true`, the host app must return to the login flow and wait for
+the next `auth_success` before calling authenticated APIs again.
 
 If the host game has its own server picker, call `UpdateServerClientId(serverClientId)`
 after the player selects a server. The SDK matches that value against server name,
